@@ -25,13 +25,6 @@ namespace UnityEditor.ShaderGraph.Drawing
         TextField m_PathLabelTextField;
         bool m_EditPathCancelled = false;
         List<Node> m_SelectedNodes = new List<Node>();
-
-        Dictionary<ShaderInput, bool> m_ExpandedInputs = new Dictionary<ShaderInput, bool>();
-
-        public Dictionary<ShaderInput, bool> expandedInputs
-        {
-            get { return m_ExpandedInputs; }
-        }
         
         public string assetName
         {
@@ -386,7 +379,6 @@ namespace UnityEditor.ShaderGraph.Drawing
             else
             {
                 row.expanded = true;
-                m_ExpandedInputs[input] = true;
                 m_Graph.owner.RegisterCompleteObjectUndo("Create Graph Input");
                 m_Graph.AddGraphInput(input);
                 field.OpenTextEditor();
@@ -400,7 +392,6 @@ namespace UnityEditor.ShaderGraph.Drawing
 
         void UpdateSelectionAfterUndoRedo(AttachToPanelEvent evt)
         {
-            m_ExpandedInputs[input] = !m_InputRows[input].expanded;
             var newFieldView = evt.target as BlackboardFieldView;
             // If this field view represents a value that was previously selected
             if (oldSelectionPersistenceData.TryGetValue(newFieldView?.shaderInput.referenceName, out var oldViewDataKey))

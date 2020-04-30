@@ -31,9 +31,6 @@ namespace UnityEditor.ShaderGraph.Drawing
     [Serializable]
     class UserViewSettings
     {
-        // TODO: Temporary Inspector
-        public bool isInspectorVisible = true;
-
         public bool isBlackboardVisible = true;
         public bool isPreviewVisible = true;
         public bool isInspectorVisible = true;
@@ -54,9 +51,6 @@ namespace UnityEditor.ShaderGraph.Drawing
         BlackboardProvider m_BlackboardProvider;
         ColorManager m_ColorManager;
         EditorWindow m_EditorWindow;
-
-        // TODO: Temporary Inspector
-        InspectorView m_InspectorView;
 
         public BlackboardProvider blackboardProvider
         {
@@ -255,10 +249,6 @@ namespace UnityEditor.ShaderGraph.Drawing
 
                 m_BlackboardProvider = new BlackboardProvider(graph);
                 m_GraphView.Add(m_BlackboardProvider.blackboard);
-
-                // TODO: Temporary Inspector
-                m_InspectorView = new InspectorView(m_Graph, previewManager);
-                m_GraphView.Add(m_InspectorView);
 
                 CreateMasterPreview();
                 // When Matt integrates his stacks work, the inspector will need to trigger preview updates
