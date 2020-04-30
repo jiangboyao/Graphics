@@ -93,7 +93,7 @@ namespace UnityEditor.ShaderGraph.Drawing
             {
                 m_RenderDatas.TryGetValue(node.objectId, out result);
             }
-            
+
             return result;
         }
 
@@ -292,7 +292,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     UpdateMasterPreview(ModificationScope.Topological);
                     continue;
                 }
-
+                
                 DestroyPreview(node.objectId);
                 m_RefreshTimedNodes = true;
             }
@@ -420,7 +420,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                         var renderData = GetPreviewRenderData(node);
                         if (renderData == null) // non-active output nodes can have NULL render data (no preview)
                             continue;
-
+                        
                         if ((renderData.shaderData.shader == null) || (renderData.shaderData.mat == null))
                         {
                             // avoid calling NotifyPreviewChanged repeatedly
@@ -841,7 +841,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                     // TODO: Where to add errors to the stack??
                     if(shaderData.node == null)
                         return;
-
+                    
                     m_Messenger.AddOrAppendError(this, shaderData.node.objectId, messages[0]);
                 }
             }
