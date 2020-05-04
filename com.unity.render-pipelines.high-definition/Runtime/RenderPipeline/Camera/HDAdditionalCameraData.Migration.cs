@@ -26,6 +26,8 @@ namespace UnityEngine.Rendering.HighDefinition
             AddReflectionSettings,
             /// <summary>Version Step.</summary>
             AddCustomPostprocessAndCustomPass,
+            /// <summary>Version Step.</summary>
+            EnableMSAAByDefault,
         }
 
         [SerializeField, FormerlySerializedAs("version")]
@@ -69,6 +71,10 @@ namespace UnityEngine.Rendering.HighDefinition
             MigrationStep.New(Version.AddCustomPostprocessAndCustomPass, (HDAdditionalCameraData data) =>
             {
                 FrameSettings.MigrateToCustomPostprocessAndCustomPass(ref data.renderingPathCustomFrameSettings);
+            }),
+            MigrationStep.New(Version.EnableMSAAByDefault, (HDAdditionalCameraData data) =>
+            {
+                FrameSettings.EnableMSAAByDefault(ref data.renderingPathCustomFrameSettings);
             })
         );
 

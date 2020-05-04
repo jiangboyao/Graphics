@@ -426,5 +426,10 @@ namespace UnityEngine.Rendering.HighDefinition
             fs.sssQualityLevel       = 0;
             fs.sssCustomSampleBudget = previouslyHighQuality ? 55 : (int)DefaultSssSampleBudgetForQualityLevel.Low;
         }
+
+        internal static void EnableMSAAByDefault(ref FrameSettings frameSettings)
+        {
+            frameSettings.SetEnabled(FrameSettingsField.MSAA, true);
+        }
     }
 }

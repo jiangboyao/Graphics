@@ -21,7 +21,8 @@ namespace UnityEngine.Rendering.HighDefinition
             ShadowFilteringVeryHighQualityRemoval,
             SeparateColorGradingAndTonemappingFrameSettings,
             ReplaceTextureArraysByAtlasForCookieAndPlanar,
-            AddedAdaptiveSSS
+            AddedAdaptiveSSS,
+            EnableMSAAByDefault
         }
 
         static readonly MigrationDescription<Version, HDRenderPipelineAsset> k_Migration = MigrationDescription.New(
@@ -110,6 +111,10 @@ namespace UnityEngine.Rendering.HighDefinition
                 FrameSettings.MigrateSubsurfaceParams(ref data.m_RenderingPathDefaultCameraFrameSettings,                  previouslyHighQuality);
                 FrameSettings.MigrateSubsurfaceParams(ref data.m_RenderingPathDefaultBakedOrCustomReflectionFrameSettings, previouslyHighQuality);
                 FrameSettings.MigrateSubsurfaceParams(ref data.m_RenderingPathDefaultRealtimeReflectionFrameSettings,      previouslyHighQuality);
+            }),
+            MigrationStep.New(Version.EnableMSAAByDefault, (HDRenderPipelineAsset data) =>
+            {
+                FrameSettings.EnableMSAAByDefault(ref data.m_RenderingPathDefaultCameraFrameSettings); //to write (should only change the boolean value ; call same method in the Camera migration)
             })
         );
 
