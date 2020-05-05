@@ -54,7 +54,6 @@ namespace UnityEngine.Rendering.HighDefinition
                     }
                     break;
                 }
-                    RenderReflectionsQuality(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
             }
             else if (m_Asset.currentPlatformRenderPipelineSettings.supportedRayTracingMode == RenderPipelineSettings.SupportedRayTracingMode.Quality)
             {
