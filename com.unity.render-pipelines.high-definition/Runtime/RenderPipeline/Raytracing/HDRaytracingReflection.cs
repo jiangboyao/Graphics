@@ -38,18 +38,31 @@ namespace UnityEngine.Rendering.HighDefinition
         {
             ScreenSpaceReflection reflectionSettings = hdCamera.volumeStack.GetComponent<ScreenSpaceReflection>();
 
-            switch (reflectionSettings.mode.value)
+            // Based on what the asset supports, follow the volume or force the right mode.
+            if (m_Asset.currentPlatformRenderPipelineSettings.supportedRayTracingMode == RenderPipelineSettings.SupportedRayTracingMode.Both)
             {
-                case RayTracingMode.Performance:
+                switch (reflectionSettings.mode.value)
                 {
-                    RenderReflectionsPerformance(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
+                    case RayTracingMode.Performance:
+                    {
+                        RenderReflectionsPerformance(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
+                    }
+                    break;
+                    case RayTracingMode.Quality:
+                    {
+                        RenderReflectionsQuality(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
+                    }
+                    break;
                 }
-                break;
-                case RayTracingMode.Quality:
-                {
                     RenderReflectionsQuality(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
-                }
-                break;
+            }
+            else if (m_Asset.currentPlatformRenderPipelineSettings.supportedRayTracingMode == RenderPipelineSettings.SupportedRayTracingMode.Quality)
+            {
+                RenderReflectionsQuality(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
+            }
+            else
+            {
+                RenderReflectionsPerformance(hdCamera, cmd, outputTexture, renderContext, frameCount, transparent);
             }
         }
 
@@ -327,7 +340,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 CoreUtils.SetKeyword(cmd, "MULTI_BOUNCE_INDIRECT", settings.bounceCount.value > 1);
 
                 // We are not in the diffuse only case
-                CoreUtils.SetKeyword(cmd, "DIFFUSE_LIGHTING_ONLY", false);
+                cmd.SetGlobalInt(HDShaderIDs._RayTracingDiffuseLightingOnly, 0);
 
                 // Run the computation
                 cmd.DispatchRays(reflectionShader, transparent ? m_RayGenIntegrationTransparentName : m_RayGenIntegrationName, (uint)hdCamera.actualWidth, (uint)hdCamera.actualHeight, (uint)hdCamera.viewCount);
