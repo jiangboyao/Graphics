@@ -1,4 +1,4 @@
-﻿using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEditor.ShaderGraph;
 
 namespace UnityEditor.Rendering.HighDefinition.ShaderGraph
@@ -330,7 +330,7 @@ namespace UnityEditor.Rendering.HighDefinition.ShaderGraph
                 structs = CoreStructCollections.Default,
                 fieldDependencies = CoreFieldDependencies.Default,
                 pragmas = CorePragmas.RaytracingBasic,
-                defines = StackLitDefines.RaytracingForwardIndirect,
+                defines = StackLitDefines.RaytracingIndirect,
                 keywords = CoreKeywords.RaytracingIndirect,
                 includes = CoreIncludes.Raytracing,
                 requiredFields = new FieldCollection(){ HDFields.SubShader.StackLit, HDFields.ShaderPass.RaytracingIndirect },
@@ -356,7 +356,8 @@ namespace UnityEditor.Rendering.HighDefinition.ShaderGraph
                 structs = CoreStructCollections.Default,
                 fieldDependencies = CoreFieldDependencies.Default,
                 pragmas = CorePragmas.RaytracingBasic,
-                keywords = CoreKeywords.HDBase,
+                defines = StackLitDefines.RaytracingVisibility,
+                keywords = CoreKeywords.HDBaseNoCrossFade,
                 includes = CoreIncludes.Raytracing,
                 requiredFields = new FieldCollection(){ HDFields.SubShader.StackLit, HDFields.ShaderPass.RaytracingVisibility },
             };
@@ -381,7 +382,7 @@ namespace UnityEditor.Rendering.HighDefinition.ShaderGraph
                 structs = CoreStructCollections.Default,
                 fieldDependencies = CoreFieldDependencies.Default,
                 pragmas = CorePragmas.RaytracingBasic,
-                defines = StackLitDefines.RaytracingForwardIndirect,
+                defines = StackLitDefines.RaytracingForward,
                 keywords = CoreKeywords.RaytracingGBufferForward,
                 includes = CoreIncludes.Raytracing,
                 requiredFields = new FieldCollection(){ HDFields.SubShader.StackLit, HDFields.ShaderPass.RaytracingForward },
@@ -645,15 +646,36 @@ namespace UnityEditor.Rendering.HighDefinition.ShaderGraph
 #region Defines
         static class StackLitDefines
         {
-            public static DefineCollection RaytracingForwardIndirect = new DefineCollection
+            public static DefineCollection RaytracingForward = new DefineCollection
             {
                 { CoreKeywordDescriptors.Shadow, 0 },
+                { RayTracingNode.GetRayTracingKeyword(), 0 },
+                { CoreKeywordDescriptors.HasLightloop, 1 },
+            };
+
+            public static DefineCollection RaytracingIndirect = new DefineCollection
+            {
+                { CoreKeywordDescriptors.Shadow, 0 },
+                { RayTracingNode.GetRayTracingKeyword(), 1 },
                 { CoreKeywordDescriptors.HasLightloop, 1 },
             };
 
             public static DefineCollection RaytracingGBuffer = new DefineCollection
             {
                 { CoreKeywordDescriptors.Shadow, 0 },
+                { RayTracingNode.GetRayTracingKeyword(), 1 },
+            };
+
+            public static DefineCollection RaytracingVisibility = new DefineCollection
+            {
+                { RayTracingNode.GetRayTracingKeyword(), 1 },
+            };
+
+            public static DefineCollection RaytracingPathTracing = new DefineCollection
+            {
+                { CoreKeywordDescriptors.Shadow, 0 },
+                { RayTracingNode.GetRayTracingKeyword(), 0 },
+                { CoreKeywordDescriptors.HasLightloop, 1 },
             };
         }
 #endregion
