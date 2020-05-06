@@ -121,10 +121,6 @@ namespace UnityEngine.Rendering.HighDefinition
                 // Fetch the right tracing kernel
                 int currentKernel = giSettings.fullResolutionSS ? m_TraceGlobalIlluminationKernel : m_TraceGlobalIlluminationHalfKernel;
 
-                // Inject the frame index
-                int frameIndex = RayTracingFrameIndex(hdCamera);
-                cmd.SetComputeIntParam(ssGICS, HDShaderIDs._RaytracingFrameIndex, frameIndex);
-
                 // Inject all the input scalars
                 float n = hdCamera.camera.nearClipPlane;
                 float f = hdCamera.camera.farClipPlane;
@@ -157,8 +153,6 @@ namespace UnityEngine.Rendering.HighDefinition
                 currentKernel = giSettings.fullResolutionSS ? m_ReprojectGlobalIlluminationKernel : m_ReprojectGlobalIlluminationHalfKernel;
 
                 // Inject all the input scalars
-                Vector4 colorPyramidUVScaleAndLimit = HDUtils.ComputeUvScaleAndLimit(hdCamera.historyRTHandleProperties.previousViewportSize, hdCamera.historyRTHandleProperties.previousRenderTargetSize);
-                cmd.SetComputeVectorParam(ssGICS, HDShaderIDs._ColorPyramidUvScaleAndLimitPrevFrame, colorPyramidUVScaleAndLimit);
                 cmd.SetComputeFloatParam(ssGICS, HDShaderIDs._RaytracingIntensityClamp, giSettings.clampValueSS);
 
                 // Bind all the input buffers

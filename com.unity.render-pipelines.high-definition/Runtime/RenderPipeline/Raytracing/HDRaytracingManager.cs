@@ -75,7 +75,8 @@ namespace UnityEngine.Rendering.HighDefinition
         HDSimpleDenoiser m_SimpleDenoiser;
         HDDiffuseDenoiser m_DiffuseDenoiser;
         HDReflectionDenoiser m_ReflectionDenoiser;
-        HDDiffuseShadowDenoiser m_DiffuseShadowDenoiser;?        SSGIDenoiser m_SSGIDenoiser;
+        HDDiffuseShadowDenoiser m_DiffuseShadowDenoiser;
+        SSGIDenoiser m_SSGIDenoiser;
         
 
         // Ray-count manager data
@@ -106,35 +107,6 @@ namespace UnityEngine.Rendering.HighDefinition
         RTHandle m_RayTracingIntermediateBufferRGBA1;
         RTHandle m_RayTracingIntermediateBufferRGBA2;
         RTHandle m_RayTracingIntermediateBufferRGBA3;
-
-        internal RTHandle GetRayTracingBuffer(InternalRayTracingBuffers bufferID)
-        {
-            switch (bufferID)
-            {
-                case InternalRayTracingBuffers.Distance:
-                    return m_RayTracingDistanceBuffer;
-                case InternalRayTracingBuffers.Direction:
-                    return m_RayTracingDirectionBuffer;
-                case InternalRayTracingBuffers.R0:
-                    return m_RayTracingIntermediateBufferR0;
-                case InternalRayTracingBuffers.R1:
-                    return m_RayTracingIntermediateBufferR1;
-                case InternalRayTracingBuffers.RG0:
-                    return m_RayTracingIntermediateBufferRG0;
-                case InternalRayTracingBuffers.RG1:
-                    return m_RayTracingIntermediateBufferRG1;
-                case InternalRayTracingBuffers.RGBA0:
-                    return m_RayTracingIntermediateBufferRGBA0;
-                case InternalRayTracingBuffers.RGBA1:
-                    return m_RayTracingIntermediateBufferRGBA1;
-                case InternalRayTracingBuffers.RGBA2:
-                    return m_RayTracingIntermediateBufferRGBA2;
-                case InternalRayTracingBuffers.RGBA3:
-                    return m_RayTracingIntermediateBufferRGBA3;
-                default:
-                    return null;
-            }
-        }
 
         internal void InitRayTracingManager()
         {
@@ -183,7 +155,8 @@ namespace UnityEngine.Rendering.HighDefinition
             if (m_SimpleDenoiser != null)
                 m_SimpleDenoiser.Release();
             if (m_SSGIDenoiser != null)
-                m_SSGIDenoiser.Release();?            if (m_DiffuseShadowDenoiser != null)
+                m_SSGIDenoiser.Release();
+            if (m_DiffuseShadowDenoiser != null)
                 m_DiffuseShadowDenoiser.Release();
             if (m_DiffuseDenoiser != null)
                 m_DiffuseDenoiser.Release();
@@ -697,10 +670,10 @@ namespace UnityEngine.Rendering.HighDefinition
         {
             if (m_DiffuseShadowDenoiser == null)
             {
-                m_DiffuseShadowDenoiser = new DiffuseShadowDenoiser();
+                m_DiffuseShadowDenoiser = new HDDiffuseShadowDenoiser();
                 m_DiffuseShadowDenoiser.Init(m_Asset.renderPipelineRayTracingResources, sharedRTManager, this);
             }
-            return m_DiffuseShadowDenoiser
+            return m_DiffuseShadowDenoiser;
         }
 
         internal bool GetRayTracingState()
